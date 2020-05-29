@@ -12,20 +12,20 @@ def get_prices(symbol, date):
     os.environ['IEX_API_VERSION'] = 'iexcloud-sandbox'
     os.environ['IEX_TOKEN'] = 'Tsk_8e26ec2ad58840f287bb6444fcc5f2de'
 
-    # # Loop through each row of input df
-    # try:
-    #     # Call IEX Cloud API to get historical price data
-    #     price_df = get_historical_data(symbol, date, close_only=True, output_format='pandas')
-    #     price = price_df['close'].values[0]
-    #     print(symbol + " was @ $" + str(price) + " on " + str(date))
-    #     new_stock_data.loc[index, 'Price'] = price
-    # except (ValueError, iexfinance.utils.exceptions.IEXQueryError) as e:
-    #     print("Couldn't get price for " + symbol + ".")
-    # except KeyError:
-    #     # Try previous day until a valid price is found (e.g., skip wkdns/holidays)
-    #     return get_prices(symbol, date=str(int(date) - 1))
-    #     print(stock + " was @ $" + str(price) + " on " + str(date))
-    #     new_stock_data.loc[index, 'Price'] = price
+    # Loop through each row of input df
+    try:
+        # Call IEX Cloud API to get historical price data
+        price_df = get_historical_data(symbol, date, close_only=True, output_format='pandas')
+        price = price_df['close'].values[0]
+        print(symbol + " was @ $" + str(price) + " on " + str(date))
+        new_stock_data.loc[index, 'Price'] = price
+    except (ValueError, iexfinance.utils.exceptions.IEXQueryError) as e:
+        print("Couldn't get price for " + symbol + ".")
+    except KeyError:
+        # Try previous day until a valid price is found (e.g., skip wkdns/holidays)
+        return get_prices(symbol, date=str(int(date) - 1))
+        print(stock + " was @ $" + str(price) + " on " + str(date))
+        new_stock_data.loc[index, 'Price'] = price
 
     return new_stock_data
 
